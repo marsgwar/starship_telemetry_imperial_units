@@ -9,8 +9,10 @@ from pyatmos import coesa76
 
 kmph = 1000 / 3600
 km = 1000
+mile = 1000 / 0.62137119
 s = 1
 kPa = 1000
+mph = (1000 / 3600)/0.62137119
 
 # Sidereal day
 T_s = 86164.0905
@@ -284,3 +286,110 @@ plt.axis(
 )
 plt.savefig("trajectory_map_zoomed.png")
 plt.show()
+
+plt.figure(figsize=(10, 12))
+plt.subplot(521)
+plt.title("Raw speed and altitude data")
+plt.plot(t, v_raw / mph, color='k')
+plt.ylabel("Speed (mph)", color="k")
+plt.tick_params(axis='y', labelcolor="k")
+plt.xlabel("t (s)")
+plt.twinx()
+plt.plot(t, y_raw / mile, color='C3')
+# plt.plot(t, y_interp / km, color='k', linestyle=":")
+plt.ylabel("Altitude (miles)", color="C3")
+plt.tick_params(axis='y', labelcolor="C3")
+
+plt.subplot(522)
+plt.title("x and y velocity")
+plt.plot(t, vx / mph, color='C0')
+plt.ylabel("$v_x$ (mph)", color="C0")
+plt.tick_params(axis='y', labelcolor="C0")
+plt.xlabel("t (s)")
+plt.twinx()
+plt.plot(t, vy / mph, color='C3')
+plt.ylabel("$v_y$ (mph)", color="C3")
+plt.tick_params(axis='y', labelcolor="C3")
+
+plt.subplot(523)
+plt.title("x and y position")
+plt.plot(t, x / mile, color='C0')
+plt.ylabel("$x$ (miles)", color="C0")
+plt.tick_params(axis='y', labelcolor="C0")
+plt.xlabel("t (s)")
+plt.twinx()
+plt.plot(t, y / mile, color='C3')
+plt.ylabel("$y$ (miles)", color="C3")
+plt.tick_params(axis='y', labelcolor="C3")
+
+plt.subplot(524)
+plt.title("Trajectory")
+plt.plot(x / mile, y / mile, color='k', label="Actual")
+plt.xlabel("$x$ (miles)")
+plt.ylabel("$y$ (miles)")
+
+plt.subplot(525)
+plt.title("Acceleration")
+plt.plot(t, ax / g, color='C0', label="$a_x$")
+plt.plot(t, ay / g, color='C3', label="$a_y$")
+plt.ylabel("Acceleration (g)")
+plt.legend()
+plt.xlabel("t (s)")
+
+plt.subplot(526)
+plt.title("Dynamic pressure and Mach number")
+plt.plot(t, q / kPa, color="k")
+plt.ylabel("q (kPa)")
+plt.xlabel("t (s)")
+plt.twinx()
+plt.plot(t, Ma, color="C2")
+plt.ylabel("Ma", color="C2")
+plt.tick_params(axis='y', labelcolor="C2")
+plt.tight_layout()
+
+plt.subplot(527)
+plt.title("Orbital radius")
+plt.plot(t, r_semimajor / R, label="semimajor axis")
+plt.plot(t, ra / R, label="apogee")
+plt.plot(t, rp / R, label="perigee")
+plt.ylabel("Orbital radius (Earth radii)")
+plt.xlabel("t (s)")
+plt.legend()
+
+plt.subplot(528)
+plt.title("Orbital altitude")
+plt.plot(t, (r_semimajor - R) / mile, label="semimajor axis")
+plt.plot(t, (ra - R) / mile, label="apogee")
+plt.plot(t, (rp - R) / mile, label="perigee")
+plt.ylabel("Orbital altitude (miles)")
+plt.axis(ymin=-50, ymax=50)
+plt.xlabel("t (s)")
+plt.legend()
+
+plt.subplot(529)
+plt.title("Mach and altitude data")
+plt.plot(t, Ma, color='k')
+plt.ylabel("Ma", color="k")
+plt.tick_params(axis='y', labelcolor="k")
+plt.xlabel("t (s)")
+plt.twinx()
+plt.plot(t, y_raw / mile, color='C3')
+# plt.plot(t, y_interp / km, color='k', linestyle=":")
+plt.ylabel("Altitude (miles)", color="C3")
+plt.tick_params(axis='y', labelcolor="C3")
+
+plt.subplot(5,2,10)
+#plt.title("Mach and altitude data")
+#plt.plot(t, Ma, color='k')
+#plt.ylabel("Ma", color="k")
+#plt.tick_params(axis='y', labelcolor="k")
+#plt.xlabel("t (s)")
+#plt.twinx()
+#plt.plot(t, y_raw / mile, color='C3')
+# plt.plot(t, y_interp / km, color='k', linestyle=":")
+#plt.ylabel("Altitude (miles)", color="C3")
+#plt.tick_params(axis='y', labelcolor="C3")
+
+plt.tight_layout()
+
+plt.savefig("telemetryIU.png")
